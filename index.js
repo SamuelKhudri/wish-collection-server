@@ -2,7 +2,8 @@ const express = require('express');
 const { MongoClient } = require('mongodb');
 const cors = require('cors');
 require('dotenv').config()
-
+// stripe secret key get
+const stripe = require('stripe')(process.env.STRIPE_SECRET);
 // require id for delete
 const ObjectId = require('mongodb').ObjectId;
 //----app use----- 
@@ -181,7 +182,17 @@ async function run() {
             res.json({ admin: isAdmin });
         });
 
-
+        //    ---------------Payment Section started---------------
+        app.post('/create-payment-intent', async (req, res) => {
+            const paymentInfo = req.body;
+            const amount = paymentInfo.price * 100;
+            const paymentIntent = await stripe.paymentIntents.create({
+                currency: 'usd',
+                amount: amount,
+                payment_method_types: ['card']
+            });
+            res.json({ clientSecret: paymentIntent.client_secret })
+        })
 
 
     }
