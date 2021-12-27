@@ -76,6 +76,15 @@ async function run() {
             res.json(orders);
         });
 
+        // get data for nav bar cart
+        app.get('/orders/cart', async (req, res) => {
+            const email = req.query.email;
+            const query = { email: email }
+            const cursor = ordersCollection.find(query);
+            const orders = await cursor.toArray();
+            res.json(orders);
+        });
+
         // dleted user for my order review page btn
 
         app.delete('/orders/:email', async (req, res) => {
@@ -183,16 +192,32 @@ async function run() {
         });
 
         //    ---------------Payment Section started---------------
+        // define payment data get for stripe payments
         app.post('/create-payment-intent', async (req, res) => {
             const paymentInfo = req.body;
-            const amount = paymentInfo.price * 100;
+            const paymentAmount = parseInt(paymentInfo?.cost)
+            const amount = paymentAmount * 100;
             const paymentIntent = await stripe.paymentIntents.create({
                 currency: 'usd',
                 amount: amount,
                 payment_method_types: ['card']
             });
             res.json({ clientSecret: paymentIntent.client_secret })
-        })
+        });
+
+        //---put api
+        app.put('/orders/:id', async (req, res) => {
+            const id = req.params.id;
+            const payment = req.body;
+            const filter = { _id: ObjectId(id) };
+            const updateDoc = {
+                $set: {
+                    payment: payment
+                }
+            }
+            const result = await ordersCollection.updateOne(filter, updateDoc);
+            res.json(result)
+        });
 
 
     }
