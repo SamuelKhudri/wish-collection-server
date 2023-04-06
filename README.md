@@ -1,10 +1,18 @@
 Just open the powersell in VS code and type: npx-create-react-app review-website
 
+<<<<<<< HEAD
 ![front view of our website]
 
 
 # My live link
 This project was bootstrapped with [Create React App] live link : .
+=======
+![front view of our website
+
+
+# My live link
+This project was bootstrapped with [Create React App] live link : 
+>>>>>>> 847a593d3f4bc4a5c5bbbc95acb3cc94319ea5b3
 
 # What i use in this project?
 i use node.js , html, css,firebase login, Mongodb database server, Bootstrap css framework and React. Its mainly based on React application.
