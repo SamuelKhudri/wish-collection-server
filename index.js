@@ -30,7 +30,7 @@ async function run() {
 
 
         // ----------------Get all Categoris-------------------
-        app.get('/categories', async (req, res) => {
+        app.get('/categories/all', async (req, res) => {
             const cursor = categoriesCollection.find({});
             const result = await cursor.toArray();
             res.json(result);
